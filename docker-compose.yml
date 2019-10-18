@@ -1,0 +1,30 @@
+version: '3.3'
+services:
+  php:
+    image: php:7.2.14-apache-stretch
+    container_name: php_apache
+    volumes:
+      - type: bind
+        source: ./project
+        target: /var/www/html
+      - type: bind
+        source: ./php/php.ini
+        target: /usr/local/etc/php/php.ini
+      - type: bind
+        source: ./apache/apache-config.conf
+        target: /etc/apache2/sites-enabled/000-default.conf
+    ports:
+      - "80:80"
+    networks:
+      website:
+        ipv4_address: 172.16.0.5
+  
+networks:
+  website:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.0.5/24      
+
+  
